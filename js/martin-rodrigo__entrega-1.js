@@ -96,12 +96,8 @@ function prestamoHipotecario () {
          -Vas a devolvernos $${totalAdevolver} en ${cuotas} cuotas de $${totalAdevolver/cuotas}`);
 }
 
-/* let detalleCuotas = "Detalle de tus cuotas:\n";
-    for (let i = 1; i <= cuotas; i++) {
-        detalleCuotas += `Cuota ${i}: $${totalAdevolver/cuotas.toFixed(2)}\n`;
-    }
-    alert(detalleCuotas);
- */
+
+
 function prestamoPersonal () {
     let dineroPrestar  = Number(prompt(`Ok, ¿cuánto dinero necesitás?`));
     while (dineroPrestar > salario) {
