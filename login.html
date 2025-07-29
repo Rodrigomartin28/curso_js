@@ -4,117 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - Préstamos</title>
+    <script defer src="./js/login.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<section class="bg-gray-100 min-h-screen flex items-center justify-center">
     
     <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">Iniciar Sesión</h1>
+        <h1 class="text-3xl font-bold text-gray-800 text-center mb-6">Simulemos un préstamo para que puedas pedirlo</h1>
         
-        <!-- Mensaje de error (oculto por defecto) -->
-        <div id="error-message" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 hidden">
+        <div id="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 hidden">
             <span>Usuario o contraseña incorrectos</span>
         </div>
-        
-        <!-- Formulario de login -->
+
         <form id="login-form">
             <div class="mb-4">
-                <label for="usuario" class="block text-gray-700 text-sm font-medium mb-2">Usuario</label>
+                <label for="usuario" class="block text-gray-700 text-sm font-medium mb-2">Dejanos tu nombre</label>
                 <input 
                     type="text" 
                     id="usuario" 
-                    name="usuario"
+                    name="Usuario"
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Ingresa tu usuario"
+                    placeholder="Algo de vos necesitamos saber, dale"
                     required
                 >
             </div>
             
             <div class="mb-6">
-                <label for="password" class="block text-gray-700 text-sm font-medium mb-2">Contraseña</label>
+                <label for="password" class="block text-gray-700 text-sm font-medium mb-2">Ingresá la contraseña</label>
                 <input 
                     type="password" 
                     id="password" 
                     name="password"
                     class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="Ingresa tu contraseña"
+                    placeholder="Es 123456"
                     required
                 >
             </div>
             
             <button 
-                type="submit" 
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
+            id="button-login" type="button" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200"
             >
                 Iniciar Sesión
             </button>
         </form>
-        
-        <!-- Información de prueba -->
         <div class="mt-6 p-4 bg-gray-50 rounded-lg">
-            <p class="text-sm text-gray-600 text-center font-medium">Para probar:</p>
-            <p class="text-sm text-gray-600 text-center">Usuario: <span class="font-mono">admin</span></p>
-            <p class="text-sm text-gray-600 text-center">Contraseña: <span class="font-mono">123456</span></p>
+            <p class="text-sm text-gray-600 text-center"> Contraseña: 123456</p>
         </div>
     </div>
 
-    <script>
-        // Variables para los elementos del DOM
-        const loginForm = document.getElementById('login-form');
-        const usuarioInput = document.getElementById('usuario');
-        const passwordInput = document.getElementById('password');
-        const errorMessage = document.getElementById('error-message');
-
-        // Credenciales de prueba (en un proyecto real esto NO se hace así)
-        const credencialesValidas = {
-            usuario: 'admin',
-            password: '123456'
-        };
-
-        // Función para manejar el envío del formulario
-        function handleLogin(event) {
-            event.preventDefault(); // Evita que se recargue la página
-            
-            // Obtener valores de los campos
-            const usuario = usuarioInput.value.trim();
-            const password = passwordInput.value.trim();
-            
-            // Validar credenciales
-            if (usuario === credencialesValidas.usuario && password === credencialesValidas.password) {
-                // Login exitoso
-                console.log('Login exitoso');
-                
-                // Guardar estado de sesión
-                localStorage.setItem('usuarioLogueado', 'true');
-                localStorage.setItem('nombreUsuario', usuario);
-                
-                // Redirigir a la página principal
-                // Cambia 'index.html' por el nombre de tu archivo principal
-                window.location.href = 'index.html';
-                
-            } else {
-                // Login fallido
-                errorMessage.classList.remove('hidden');
-                
-                // Ocultar el mensaje de error después de 3 segundos
-                setTimeout(() => {
-                    errorMessage.classList.add('hidden');
-                }, 3000);
-                
-                // Limpiar campos
-                passwordInput.value = '';
-            }
-        }
-
-        // Agregar el event listener al formulario
-        loginForm.addEventListener('submit', handleLogin);
-
-        // Verificar si ya está logueado
-        if (localStorage.getItem('usuarioLogueado') === 'true') {
-            // Si ya está logueado, redirigir directamente
-            window.location.href = 'index.html';
-        }
-    </script>
-
-</body>
+</ection>
 </html>

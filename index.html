@@ -1,83 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <script defer src="./js/main.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-  </head>
-  <body class="bg-gray-100">
-    <main class="max-w-7xl mx-auto p-8 space-y-12">
-      <section>
-        <h1 class="text-4xl font-bold text-gray-900 p-8" id="Simulador de préstamos">Crea tu propio préstamo</h1>
-        <div>
-          <form
-            id="formulario"
-            class="max-w-md w-full p-6 bg-white rounded-2xl shadow-md space-y-4"
-          >
-            <h2 class="text-xl font-bold text-gray-800 text-center">
-              Agregar solicitud de préstamo
-            </h2>
 
-            <div>
-              <label
-                for="Nombre"
-                class="block text-sm font-medium text-gray-700"
-                >¡Ponele nombre! Lo guardamos para que después puedas elegir la opción que menos lágrimas te saque</label
-              >
-              <input
-                type="text"
-                id="nombre"
-                placeholder="Ponele un nombre creativo a tu préstamo"
-                class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-            </div>
-            <div>
-              <label for="monto" class="block text-sm font-medium text-gray-700"
-                >¿Cuánto andas necesitando?</label
-              >
-              <input
-                type="number"
-                id="monto"
-                placeholder="Ej: 1000000"
-                required
-                class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <div
-                id="advertenciaMonto"
-                class="hidden mt-2 p-3 rounded-xl bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 text-sm"
-              >
-                ⚠️ Si te vas a arriesgar, mandate en serio. El monto mínimo es $1000000 ¿Es legal esto? Eh... bueno...
-              </div>
-            </div>
-            <div>
-              <label
-                for="cuotas"
-                class="block text-sm font-medium text-gray-700"
-                >Cantidad de cuotas</label
-              >
-              <input
-                type="number"
-                id="cuotas"
-                placeholder="Ej: 12"
-                required
-                class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              </div>
-              <div><button class="w-full bg-blue-600 text-white py-2 rounded-xl font-semibold hover:bg-blue-700 transition duration-200 p-2" id="simular" type="button">Simular</button></div> 
-          </form>
-          <div
-            id="info-dinamica"
-            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6"
-          ></div> 
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <script defer src="./js/main.js"></script>
+  <script defer src="./js/login.js"></script>
 
-          <h2 class="mt-12 mb-6 text-2xl font-semibold text-gray-800">O elegí una de las opciones que preparamos para vos</h2>
-          <div
-            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"
-            id="prestamos-container"
-          ></div>
-      </section>
-    </main>
-  </body>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <div class="text-center rpy-16 mb-12">
+      <h1 class="text-5xl lg:text-7xl font-bold text-gray-900 leading-tight mb-6">
+        ¡Hola, <span id="nombre-usuario" class="text-blue-600">Amigo</span>! 😁
+      </h1>
+      <p class="text-gray-600 text-xl lg:text-2xl max-w-3xl mx-auto leading-relaxed">
+        Te damos la bienvenida al simulador de préstamos. Para que puedas definir con precisión cuántos años vas a estar
+        debiéndonos plata. Calculá tu préstamo y elegí la que más convenga.
+      </p>
+    </div>
+    <div class="flex justify-center mb-12">
+      <div class="w-full max-w-md">
+        <form id="formulario" class="bg-white rounded-2xl shadow-lg p-8 space-y-6">
+          <h3 class="text-2xl font-bold text-gray-800 text-center mb-6">
+            Agregar solicitud de préstamo
+          </h3>
+
+          <div>
+            <label for="nombre" class="block text-sm font-medium text-gray-700 mb-2">
+              ¡Ponele nombre! Lo guardamos para que después puedas elegir la opción que menos lágrimas te saque
+            </label>
+            <input type="text" id="nombre" placeholder="Ponele un nombre creativo a tu préstamo"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" />
+          </div>
+
+          <div>
+            <label for="monto" class="block text-sm font-medium text-gray-700 mb-2">
+              ¿Cuánto andas necesitando?
+            </label>
+            <input type="number" id="monto" placeholder="Ej: 1000000" required
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" />
+            <div id="advertenciaMonto"
+              class="hidden mt-3 p-3 rounded-xl bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 text-sm">
+              ⚠️ Si te vas a arriesgar, mandate en serio. El monto mínimo es $1000000 ¿Es legal esto? Eh... bueno...
+            </div>
+          </div>
+
+          <div>
+            <label for="cuotas" class="block text-sm font-medium text-gray-700 mb-2">
+              Cantidad de cuotas
+            </label>
+            <input type="number" id="cuotas" placeholder="Ej: 12" required
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200" />
+          </div>
+
+          <button
+            class="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 text-lg"
+            id="simular" type="button">
+            🚀 Simular Préstamo Ahora
+          </button>
+        </form>
+      </div>
+    </div>
+    <div class="mb-12">
+      <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+        Tus simulaciones de préstamos
+      </h3>
+      <div id="info-dinamica" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      </div>
+
+      <div id="mensaje-vacio" class="text-center py-12">
+        <div class="text-6xl mb-4">💰</div>
+        <p class="text-gray-500 text-lg">
+          Aún no simulaste ningún préstamo. ¡Empezá ahora!
+        </p>
+      </div>
+    </div>
+    <div class="mt-12">
+      <h2 class="text-center text-2xl font-bold text-gray-800 mb-6 text-center">
+        Préstamos disponibles
+      </h2>
+      <p class="text-center text-gray-600 text-xl lg:text-2xl max-w-3xl mx-auto leading-relaxed pb-4">
+        Armamos estos planes, por si te da fiaca o tristeza calcular cuánto te va a costar la plata que necesitás.
+      </p>
+      <div id="prestamos-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      </div>
+    </div>
+  </div>
+
 </html>
