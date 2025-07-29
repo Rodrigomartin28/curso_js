@@ -5,22 +5,6 @@ const input = document.querySelector("input");
 const error = document.querySelector(".bg-red-500");
 const ul = document.querySelector("ul");
 
-/* button.addEventListener("click", handleClick); */
-
-/* function handleClick() {
-  if (input.value === "") {
-    error.classList.remove("hidden");
-    return;
-  }
-  const li = document.createElement("li");
-  const span = document.createElement("span");
-  span.textContent = input.value;
-  li.appendChild(span);
-  ul.appendChild(li);
-  input.value = "";
-  error.classList.add("hidden");
-} */
-
 const prestamos = [
   {
     nombre: "Express",
@@ -86,8 +70,6 @@ const misPrestamos = prestamos.map(
 
 cards.innerHTML = misPrestamos.join("");
 
-/* document.querySelector(`#prestamos-container`).innerHTML =
-  misPrestamos.join(""); //me ayudó chatgpt porque con las clases de tailwind quedaban mal distribuidas. La explicación es que join ubica las tarjetas así ""<div>Card 1</div><div>Card 2</div>"" y así funciona bien la clase asignada al contenedor padre en este caso el #prestamos-container */
 
 /// ---- agregar préstamo de usuario ------
 
