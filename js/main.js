@@ -11,6 +11,7 @@ const simular = document.querySelector("#simular");
 const advertencia = document.querySelector(`#advertenciaMonto`);
 const contenedor = document.querySelector("#info-dinamica");
 const mensajeVacio = document.querySelector("#mensaje-vacio");
+let userNameLogueado.textContent = localStorage.getItem("nombreUsuario");
 
 const prestamos = [
   {
@@ -75,7 +76,6 @@ const misPrestamos = prestamos.map(
 
 cards.innerHTML = misPrestamos.join("");
 
-userNameLogueado.textContent = localStorage.getItem("nombreUsuario");
 
 class prestamoUser {
   constructor(nombre, monto, cuotas) {
