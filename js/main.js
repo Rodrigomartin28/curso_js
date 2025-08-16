@@ -1,9 +1,16 @@
-//ejercicio
-
 const button = document.querySelector("#añadir");
 const input = document.querySelector("input");
 const error = document.querySelector(".bg-red-500");
 const ul = document.querySelector("ul");
+const cards = document.querySelector("#prestamos-container");
+const nombre = document.querySelector(`#nombre`);
+const monto = document.querySelector(`#monto`);
+const cuotas = document.querySelector(`#cuotas`);
+const userNameLogueado = document.querySelector(`#nombre-usuario`);
+const simular = document.querySelector("#simular");
+const advertencia = document.querySelector(`#advertenciaMonto`);
+const contenedor = document.querySelector("#info-dinamica");
+const mensajeVacio = document.querySelector("#mensaje-vacio");
 
 const prestamos = [
   {
@@ -45,8 +52,6 @@ const prestamos = [
   },
 ];
 
-const cards = document.querySelector("#prestamos-container");
-
 const misPrestamos = prestamos.map(
   (prestamo) => `
           <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
@@ -70,13 +75,6 @@ const misPrestamos = prestamos.map(
 
 cards.innerHTML = misPrestamos.join("");
 
-
-/// ---- agregar préstamo de usuario ------
-
-const nombre = document.querySelector(`#nombre`);
-const monto = document.querySelector(`#monto`);
-const cuotas = document.querySelector(`#cuotas`);
-userNameLogueado = document.querySelector(`#nombre-usuario`);
 userNameLogueado.textContent = localStorage.getItem("nombreUsuario");
 
 class prestamoUser {
@@ -84,75 +82,104 @@ class prestamoUser {
     this.nombre = nombre;
     this.monto = monto;
     this.cuotas = cuotas;
-    this.tasaInteres = this.calcularTasa(); //se usa this antes de la función porque pertenece al objeto
+    this.tasaInteres = this.calcularTasa();
     this.total = this.calcularTotal();
     this.valorCuota = this.calcularCuota();
   }
 
   calcularTasa() {
-    if (this.monto >= 1000000 && this.monto < 2000000) {
-      if (this.cuotas <= 3) return 0.85;
-      if (this.cuotas <= 6) return 0.95;
-      if (this.cuotas <= 12) return 1.1;
-      if (this.cuotas <= 18) return 1.25;
-      if (this.cuotas > 18) return 2.25;
-    }
+    const rangosTasas = [
+      {
+        montoMin: 1000000,
+        montoMax: 2000000,
+        tasas: [
+          { cuotasMax: 3, tasa: 0.85 },
+          { cuotasMax: 6, tasa: 0.95 },
+          { cuotasMax: 12, tasa: 1.1 },
+          { cuotasMax: 18, tasa: 1.25 },
+          { cuotasMax: Infinity, tasa: 2.25 }
+        ]
+      },
+      {
+        montoMin: 2000000,
+        montoMax: 4000000,
+        tasas: [
+          { cuotasMax: 3, tasa: 1.0 },
+          { cuotasMax: 6, tasa: 1.15 },
+          { cuotasMax: 12, tasa: 1.3 },
+          { cuotasMax: 18, tasa: 1.5 },
+          { cuotasMax: 24, tasa: 1.7 },
+          { cuotasMax: Infinity, tasa: 1.7 }
+        ]
+      },
+      {
+        montoMin: 4000000,
+        montoMax: 8000000,
+        tasas: [
+          { cuotasMax: 3, tasa: 1.2 },
+          { cuotasMax: 6, tasa: 1.4 },
+          { cuotasMax: 12, tasa: 1.6 },
+          { cuotasMax: 18, tasa: 1.85 },
+          { cuotasMax: 24, tasa: 2.1 },
+          { cuotasMax: 36, tasa: 2.4 },
+          { cuotasMax: Infinity, tasa: 4.4 }
+        ]
+      },
+      {
+        montoMin: 8000000,
+        montoMax: 16000000,
+        tasas: [
+          { cuotasMax: 3, tasa: 1.5 },
+          { cuotasMax: 6, tasa: 1.8 },
+          { cuotasMax: 12, tasa: 2.2 },
+          { cuotasMax: 18, tasa: 2.6 },
+          { cuotasMax: 24, tasa: 3.0 },
+          { cuotasMax: 36, tasa: 3.5 },
+          { cuotasMax: 48, tasa: 4.0 },
+          { cuotasMax: Infinity, tasa: 6.0 }
+        ]
+      },
+      {
+        montoMin: 16000000,
+        montoMax: 30000000,
+        tasas: [
+          { cuotasMax: 6, tasa: 2.5 },
+          { cuotasMax: 12, tasa: 3.2 },
+          { cuotasMax: 18, tasa: 4.0 },
+          { cuotasMax: 24, tasa: 4.8 },
+          { cuotasMax: 36, tasa: 5.7 },
+          { cuotasMax: 48, tasa: 6.5 },
+          { cuotasMax: 60, tasa: 7.3 },
+          { cuotasMax: Infinity, tasa: 10.3 }
+        ]
+      },
+      {
+        montoMin: 30000000,
+        montoMax: Infinity,
+        tasas: [
+          { cuotasMax: 6, tasa: 3.5 },
+          { cuotasMax: 12, tasa: 5.0 },
+          { cuotasMax: 18, tasa: 6.8 },
+          { cuotasMax: 24, tasa: 8.5 },
+          { cuotasMax: 36, tasa: 11.0 },
+          { cuotasMax: 48, tasa: 14.0 },
+          { cuotasMax: 60, tasa: 17.5 },
+          { cuotasMax: Infinity, tasa: 23.5 }
+        ]
+      }
+    ];
+    const rangoMonto = rangosTasas.find(rango => 
+      this.monto >= rango.montoMin && this.monto < rango.montoMax
+    );
+    const tasaEncontrada = rangoMonto.tasas.find(item => 
+      this.cuotas <= item.cuotasMax
+    );
 
-    if (this.monto >= 2000000 && this.monto < 4000000) {
-      if (this.cuotas <= 3) return 1.0;
-      if (this.cuotas <= 6) return 1.15;
-      if (this.cuotas <= 12) return 1.3;
-      if (this.cuotas <= 18) return 1.5;
-      if (this.cuotas <= 24) return 1.7;
-      if (this.cuotas > 24) return 1.7;
-    }
-
-    if (this.monto >= 4000000 && this.monto < 8000000) {
-      if (this.cuotas <= 3) return 1.2;
-      if (this.cuotas <= 6) return 1.4;
-      if (this.cuotas <= 12) return 1.6;
-      if (this.cuotas <= 18) return 1.85;
-      if (this.cuotas <= 24) return 2.1;
-      if (this.cuotas <= 36) return 2.4;
-      if (this.cuotas > 36) return 4.4;
-    }
-
-    if (this.monto >= 8000000 && this.monto < 16000000) {
-      if (this.cuotas <= 3) return 1.5; 
-      if (this.cuotas <= 6) return 1.8; 
-      if (this.cuotas <= 12) return 2.2;
-      if (this.cuotas <= 18) return 2.6; 
-      if (this.cuotas <= 24) return 3.0;
-      if (this.cuotas <= 36) return 3.5; 
-      if (this.cuotas <= 48) return 4.0;
-      if (this.cuotas > 48) return 6.0;  
-    }
-
-    if (this.monto >= 16000000 && this.monto < 30000000) {
-      if (this.cuotas <= 6) return 2.5; 
-      if (this.cuotas <= 12) return 3.2;
-      if (this.cuotas <= 18) return 4.0; 
-      if (this.cuotas <= 24) return 4.8; 
-      if (this.cuotas <= 36) return 5.7; 
-      if (this.cuotas <= 48) return 6.5; 
-      if (this.cuotas <= 60) return 7.3; 
-      if (this.cuotas > 60) return 10.3; 
-    }
-
-    if (this.monto >= 30000000) {
-      if (this.cuotas <= 6) return 3.5; 
-      if (this.cuotas <= 12) return 5.0; 
-      if (this.cuotas <= 18) return 6.8; 
-      if (this.cuotas <= 24) return 8.5; 
-      if (this.cuotas <= 36) return 11.0; 
-      if (this.cuotas <= 48) return 14.0; 
-      if (this.cuotas <= 60) return 17.5; 
-      if (this.cuotas > 60) return 23.5; 
-    }
+    return tasaEncontrada.tasa;
   }
 
   calcularTotal() {
-    return this.monto * (1 + this.tasaInteres);
+    return this.monto * (1 + this.tasaInteres / 100);
   }
 
   calcularCuota() {
@@ -180,7 +207,7 @@ class prestamoUser {
         <p class="text-base text-gray-700 mb-1">Monto estimado por cuota: $${
           this.valorCuota
         }</p>
-        <button class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"> Pedir ahora </button>
+        <button  class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pedirAhora"> Pedir ahora </button>
       </div>
     `;
   }
@@ -190,13 +217,9 @@ let prestamosUser = [];
 
 let prestamosGuardados = JSON.parse(localStorage.getItem("prestamosUser"));
 
-const simular = document.querySelector("#simular");
-
 simular.addEventListener("click", handleClick);
 
 function handleClick() {
-  const advertencia = document.querySelector(`#advertenciaMonto`);
-
   if (nombre.value === "" || monto.value < 1_000_000 || cuotas.value === 0) {
     advertencia.classList.remove("hidden");
     return;
@@ -212,10 +235,8 @@ function handleClick() {
 
   const divCard = document.createElement("div");
   divCard.innerHTML = nuevoPrestamo.cardNuevoPrestamo();
-  const contenedor = document.querySelector("#info-dinamica");
   contenedor.classList.remove("hidden");
   contenedor.appendChild(divCard);
-  const mensajeVacio = document.querySelector("#mensaje-vacio");
   mensajeVacio.classList.add("hidden");
 
   nombre.value = "";
@@ -223,4 +244,24 @@ function handleClick() {
   cuotas.value = "";
 
   console.log("Nuevo préstamo:", nuevoPrestamo);
+
+  const botonPedirAhora = divCard.querySelector(".pedirAhora");
+  botonPedirAhora.addEventListener("click", handlePedirAhora);
+}
+
+
+function handlePedirAhora() {
+  Swal.fire({
+    title: "¡Genial! Ya tenés tu préstamo. ¿Viste que no era tan difícil? 🎉",
+    html: `
+      <p>Si, ya sé... Este simulador tiene sus cositas. Pero estoy aprendiendo. Si pensás que hay algo que sea muy importante corregir, no dudes en ponerte en contacto conmigo.</p>
+      <br><br>
+      <a href="https://www.linkedin.com/in/rm-rodrigomartin/" target="_blank" 
+         style="color:white; background:#0077b5; padding:10px 20px; border-radius:5px; text-decoration:none; display:inline-block;">
+         Ir a mi LinkedIn
+      </a>
+    `,
+    icon: "success",
+    showCloseButton: true,
+  });
 }
