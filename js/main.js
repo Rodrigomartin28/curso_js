@@ -11,7 +11,7 @@ const simular = document.querySelector("#simular");
 const advertencia = document.querySelector(`#advertenciaMonto`);
 const contenedor = document.querySelector("#info-dinamica");
 const mensajeVacio = document.querySelector("#mensaje-vacio");
-let userNameLogueado.textContent = localStorage.getItem("nombreUsuario");
+userNameLogueado.textContent = localStorage.getItem("nombreUsuario");
 
 const prestamos = [
   {
