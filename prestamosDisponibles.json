@@ -1,0 +1,37 @@
+[
+    {
+      "nombre": "Express",
+      "descripcion": "Para salir del apriete (a veces literal 😅)",
+      "tasaInteres": 50,
+      "maxCuotas": 6,
+      "montoMax": 600.0
+    },
+    {
+      "nombre": "Así nomás",
+      "descripcion": "¡A sola firma! Rápido y sin mirar. Cuántas veces lo hicisite... Total para qué leer si no es que te sobren opciones",
+      "tasaInteres": 300,
+      "maxCuotas": 4,
+      "montoMax": 700.0
+    },
+    {
+      "nombre": "Tu primer auto",
+      "descripcion": "No es que WOW EL AUTO, pero para algo con volante te alcanza. Al menos con ruedas. Sí te vamos a exigir que puedas trasladarte en lo que sea que te compres.",
+      "tasaInteres": 50,
+      "maxCuotas": 6,
+      "montoMax": 600.0
+    },
+    {
+      "nombre": "Tasa Fija (hasta que explote todo)",
+      "descripcion": "Lo bueno: no cambia. Lo malo: es criminal desde el inicio 🔥",
+      "tasaInteres": 210,
+      "maxCuotas": 12,
+      "montoMax": 3000.0
+    },
+    {
+      "nombre": "Respirá Hondo",
+      "descripcion": "Ideal para cuando el sueldo se va antes de llegar 💸",
+      "tasaInteres": 75,
+      "maxCuotas": 3,
+      "montoMax": 500.0
+    }
+]

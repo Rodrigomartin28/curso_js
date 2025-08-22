@@ -13,69 +13,6 @@ const contenedor = document.querySelector("#info-dinamica");
 const mensajeVacio = document.querySelector("#mensaje-vacio");
 userNameLogueado.textContent = localStorage.getItem("nombreUsuario");
 
-const prestamos = [
-  {
-    nombre: "Express",
-    descripcion: "Para salir del apriete (a veces literal 😅)",
-    tasaInteres: 50,
-    maxCuotas: 6,
-    montoMax: 600.0,
-  },
-  {
-    nombre: "Así nomás",
-    descripcion:
-      "¡A sola firma! Rápido y sin mirar. Cuántas veces lo hicisite... Total para qué leer si no es que te sobren opciones",
-    tasaInteres: 300,
-    maxCuotas: 4,
-    montoMax: 700.0,
-  },
-  {
-    nombre: "Tu primer auto",
-    descripcion:
-      "No es que WOW EL AUTO, pero para algo con volante te alcanza. Al menos con ruedas. Sí te vamos a exigir que puedas trasladarte en lo que sea que te compres.",
-    tasaInteres: 50,
-    maxCuotas: 6,
-    montoMax: 600.0,
-  },
-  {
-    nombre: "Tasa Fija (hasta que explote todo)",
-    descripcion: "Lo bueno: no cambia. Lo malo: es criminal desde el inicio 🔥",
-    tasaInteres: 210,
-    maxCuotas: 12,
-    montoMax: 3000.0,
-  },
-  {
-    nombre: "Respirá Hondo",
-    descripcion: "Ideal para cuando el sueldo se va antes de llegar 💸",
-    tasaInteres: 75,
-    maxCuotas: 3,
-    montoMax: 500.0,
-  },
-];
-
-const misPrestamos = prestamos.map(
-  (prestamo) => `
-          <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
-            <h2 class="text-2xl font-bold text-gray-800 mb-2 capitalize">
-            ${prestamo.nombre}
-            </h2>
-             <p class="text-base text-gray-700 mb-3">
-            ${prestamo.descripcion}
-            </p>
-            <p class="text-sm text-gray-500 mb-1">Tasa de interés</p>
-            <p class="text-xl font-semibold text-blue-600 mb-3">
-            ${prestamo.tasaInteres}%
-            </p>
-            <p class="text-sm text-gray-500 mb-1">Máximo de cuotas</p>
-            <p class="text-base font-medium text-gray-800">
-            ${prestamo.maxCuotas}
-            </p>
-            <button class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"> Pedir ahora </button>
-          </div>`
-);
-
-cards.innerHTML = misPrestamos.join("");
-
 
 class prestamoUser {
   constructor(nombre, monto, cuotas) {
@@ -207,7 +144,8 @@ class prestamoUser {
         <p class="text-base text-gray-700 mb-1">Monto estimado por cuota: $${
           this.valorCuota
         }</p>
-        <button  class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 pedirAhora"> Pedir ahora </button>
+        <button class="mt-1 w-full px-3 py-2 rounded-xl shadow-sm bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 pedirAhora"> Pedir ahora </button>
+        <button  class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 convertirUSD"> Convertir a USD </button>
       </div>
     `;
   }
@@ -230,6 +168,7 @@ function handleClick() {
     Number(monto.value),
     Number(cuotas.value)
   );
+
   prestamosUser.push(nuevoPrestamo);
   localStorage.setItem("prestamosUser", JSON.stringify(prestamosUser));
 
@@ -247,6 +186,9 @@ function handleClick() {
 
   const botonPedirAhora = divCard.querySelector(".pedirAhora");
   botonPedirAhora.addEventListener("click", handlePedirAhora);
+
+  const botonConvertirUSD = divCard.querySelector(".convertirUSD");
+  botonConvertirUSD.addEventListener("click", handleConvertirUSD);
 }
 
 
@@ -258,10 +200,68 @@ function handlePedirAhora() {
       <br><br>
       <a href="https://www.linkedin.com/in/rm-rodrigomartin/" target="_blank" 
          style="color:white; background:#0077b5; padding:10px 20px; border-radius:5px; text-decoration:none; display:inline-block;">
-         Ir a mi LinkedIn
+         Conectar en LinkedIn
       </a>
+      <p>Por ahí nos sale algún laburito, qué se yo</p>
     `,
     icon: "success",
     showCloseButton: true,
   });
 }
+
+async function fetchPrestamos() {
+  try {
+    const response = await fetch("./prestamosDisponibles.json"); 
+
+    const prestamos = await response.json();
+
+    const misPrestamos = prestamos.map(
+      (prestamo) => `
+        <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
+          <h2 class="text-2xl font-bold text-gray-800 mb-2 capitalize">
+            ${prestamo.nombre}
+          </h2>
+          <p class="text-base text-gray-700 mb-3">
+            ${prestamo.descripcion}
+          </p>
+          <p class="text-sm text-gray-500 mb-1">Tasa de interés</p>
+          <p class="text-xl font-semibold text-blue-600 mb-3">
+            ${prestamo.tasaInteres}%
+          </p>
+          <p class="text-sm text-gray-500 mb-1">Máximo de cuotas</p>
+          <p class="text-base font-medium text-gray-800">
+            ${prestamo.maxCuotas}
+          </p>
+          <button class="mt-1 w-full px-3 py-2 rounded-xl shadow-sm bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            Pedir ahora
+          </button>
+        </div>`
+    );
+
+    cards.innerHTML = misPrestamos.join("");
+  } catch (error) {
+    console.error("Hubo un problema al obtener los préstamos:", error);
+  }
+}
+
+fetchPrestamos() 
+
+function handleConvertirUSD() {
+  Swal.fire({
+    title: "No, no sé tanto... 🤣",
+    html: `
+      <p>Lo que quiero hacer es traer los datos del préstamo generado y transformarlos con una llamada a una API. ¿Podré? Solo el tiempo dirá...</p>
+      <br><br>
+      <a href="https://www.linkedin.com/in/rm-rodrigomartin/" target="_blank" 
+         style="color:white; background:#0077b5; padding:10px 20px; border-radius:5px; text-decoration:none; display:inline-block;">
+         Conectar en LinkedIn
+      </a>
+      <p>Por ahí nos sale algún laburito, qué se yo</p>
+    `,
+    icon: "success",
+    showCloseButton: true,
+  });
+}
+
+
+
